@@ -5,15 +5,16 @@ define([
     'utils/dateDurationInMinutes',
     'utils/dateMinutesFromMidnight',
     'jef/stream',
+    'jef/functional/merge',
     'jef/functional/map'
-], function (gapi, config, dateToRange, dateDurationInMinutes, dateMinutesFromMidnight, Stream, map) {
+], function (gapi, config, dateToRange, dateDurationInMinutes, dateMinutesFromMidnight, Stream, merge, map) {
     'use strict';
 
     gapi.client.setApiKey(config.gapi.apiKey);
 
     return {
-        authorize: function () {
-            return gapi.auth.authorize(config.gapi);
+        authorize: function (immediate) {
+            return gapi.auth.authorize(_.merge(config.gapi, immediate ? {immediate: true} : {}));
         },
         loadCalendarList: function () {
             return Stream.fromPromise(gapi.client.request({

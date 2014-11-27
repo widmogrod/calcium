@@ -47,7 +47,7 @@ define([
     }
 
     function dispatch(action, params) {
-        return merge({
+        return _.merge({
             action: action
         }, params || {})
     }
@@ -58,8 +58,8 @@ define([
     actionsClicks.pipe(actions);
 
     // Auth
-    actions.accept(actionIs('try-auth')).on('data', function () {
-        calendar.authorize().then(function (v) {
+    actions.accept(actionIs('try-auth')).on('data', function (params) {
+        calendar.authorize(params.immediate).then(function (v) {
             actions.push(dispatch('authorized'));
         }, function (e) {
             actions.push(dispatch('authorized-error'));
@@ -103,6 +103,6 @@ define([
         $('body').addClass('ready').removeClass('init');
     });
 
-    actions.push(dispatch('try-auth'));
+    actions.push(dispatch('try-auth', {immediate: false}));
 });
 
