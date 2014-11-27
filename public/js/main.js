@@ -60,52 +60,42 @@ define([
 
     // Auth
     actions.accept(actionIs('try-auth')).on('data', function () {
-        console.log('[-] action try-auth');
         calendar.authorize().then(function (v) {
-            console.log('[√] try-auth', v);
             actions.push(dispatch('authorized'));
         }, function (e) {
-            console.log('[x] try-auth', e);
             actions.push(dispatch('authorized-error'));
         })
     });
     actions.accept(actionIs('authorized')).on('data', function () {
-        console.log('[-] action authorized');
         $('body').removeClass('no-auth');
         actions.push(dispatch('load-calendars'));
     });
     actions.accept(actionIs('authorized-error')).on('data', function () {
-        console.log('[-] action authorized-error');
         // Display some kind of info
         actions.push(dispatch('unauthorized'));
     });
     actions.accept(actionIs('unauthorized')).on('data', function () {
-        console.log('[-] action unauthorized');
         $('body').addClass('no-auth');
     });
     // Calendars
     actions.accept(actionIs('load-calendars')).on('data', function () {
-        console.log('[-] action load-calendars');
         calendar.loadCalendarList().on('data', function (items) {
             $('#js-calendars-list').html(
                 calendarsListView({
                     items: items
                 })
             );
-            console.log('[√] load-calendars', items);
         }).on('error', function (e) {
             console.log('[e] load-calendars', e);
         });
     });
     actions.accept(actionIs('toggle-calendar')).on('data', function (params) {
-        console.log('[-] action toggle-calendar', params.id);
         calendar.loadEventsList(params.id, new Date()).on('data', function (items) {
             $('#js-events-list').html(
                 eventsListView({
                     items: items
                 })
             );
-            console.log('[√] load-events', items);
         }).on('error', function (e) {
             console.log('[e] load-events', e);
         });
@@ -114,7 +104,6 @@ define([
         $('body').addClass('ready').removeClass('init');
     });
 
-    console.log('[-] init try-auth');
     actions.push(dispatch('try-auth'));
 });
 

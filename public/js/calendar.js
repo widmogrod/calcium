@@ -4,10 +4,9 @@ define([
     'utils/dateToRange',
     'utils/dateDurationInMinutes',
     'utils/dateMinutesFromMidnight',
-    'rxjs',
     'jef/stream',
     'jef/functional/map'
-], function (gapi, config, dateToRange, dateDurationInMinutes, dateMinutesFromMidnight, Rx, Stream, map) {
+], function (gapi, config, dateToRange, dateDurationInMinutes, dateMinutesFromMidnight, Stream, map) {
     'use strict';
 
     gapi.client.setApiKey(config.gapi.apiKey);
@@ -17,17 +16,6 @@ define([
             return gapi.auth.authorize(config.gapi);
         },
         loadCalendarList: function () {
-            //return Rx.Observable.fromPromise(gapi.client.request({
-            //    path: '/calendar/v3/users/me/calendarList'
-            //})).flatMap(function (result) {
-            //    return result.result.items;
-            //}).map(function (item) {
-            //    return {
-            //        id: item.id,
-            //        name: item.summary
-            //    }
-            //}).concatAll();
-
             return Stream.fromPromise(gapi.client.request({
                 path: '/calendar/v3/users/me/calendarList'
             })).map(function (result) {
@@ -67,7 +55,6 @@ define([
             }).map(function (items) {
                 // TODO: In Stream Remove []
                 return [map(items, function (item) {
-                    console.log(item.start, item.end)
                     return {
                         id: item.id,
                         name: item.summary,
