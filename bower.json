@@ -24,6 +24,8 @@
     "requirejs-plugins": "~1.0.2",
     "jef": "~1.9.5",
     "jquery": "~2.1.1",
-    "requirejs-text": "~2.0.12"
+    "requirejs-text": "~2.0.12",
+    "moment": "~2.8.4",
+    "rxjs": "~2.3.18"
   }
 }

@@ -1,7 +1,7 @@
 <div class="list">
 <% _.each(items, function(item) { %>
-    <div class="item">
+    <div class="item action" data-action="toggle-calendar" data-id="<%= item.id %>">
         <%= item.name %>
     </div>
-<%}) %>
+<% }) %>
 </div>

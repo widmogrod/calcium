@@ -5,6 +5,7 @@ body {
     margin: 0;
     padding: 0;
 }
+
 h1, h2, p {
     margin: 0 0 10px 0;
 }
@@ -25,7 +26,7 @@ button.google {
 
 .component {
     padding: $left-distance;
-    box-shadow: 0px 2px 5px rgba(0,0,0,.2);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, .2);
     margin-bottom: 20px;
 }
 
@@ -42,10 +43,11 @@ button.google {
     display: flex;
     flex-direction: row;
 }
+
 .panel {
-    height: 200px;
     padding-right: 10px;
     padding-left: $left-distance;
+    overflow: hidden;
     &.left {
         width: 20%
     }
@@ -59,15 +61,46 @@ button.google {
 .list {
     .item {
         font-weight: lighter;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid rgba(0,0,0,.1);
+        &.action {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(0, 0, 0, .1);
+        }
+    }
+    &.calendar-events {
+        position: relative;
+        height: 1100px;
+        margin-top: -58%; // show hours from ~7 o'clock not from midnight
+        .item {
+            position: absolute;
+            font-size: .5em;
+            &.time {
+                left: 0;
+                right: 0;
+                padding-left: 5px;
+                line-height: 5em; // this is manually set to look good
+                border-bottom: 1px solid rgba(0, 0, 0, .1);
+                z-index: 1;
+            }
+            &.event {
+                left: 30px;
+                right: 0;
+                background-color: rgba(0, 0, 0, .1);
+            }
+        }
     }
 }
 
 // State
-.authentication {display: none}
+.authentication {
+    display: none
+}
+
 .no-auth {
-    .authentication {display: block}
-    .panels {display: none}
+    .authentication {
+        display: block
+    }
+    .panels {
+        display: none
+    }
 }

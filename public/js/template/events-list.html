@@ -1,0 +1,19 @@
+<div class="list calendar-events">
+    <% for(var i = 0; i < 24; i++) {%>
+    <div class="item time"
+         style="top: <%= i/24 * 100 %>%; height: <%= 1/24 * 100 %>%">
+        <%= i %>
+    </div>
+    <% } %>
+<% _.each(items, function(item) { %>
+    <div class="item event"
+         data-action="show-event"
+         data-id="<%= item.id %>"
+         data-fromM="<%= item.duration.fromMidnight %>"
+         data-duration="<%= item.duration.duration %>"
+         style="top: <%= item.duration.fromMidnight/1440 * 100 %>%; height: <%= item.duration.duration/1440 * 100 %>%">
+        <%= item.name %>
+        <b><%= item.duration.duration %></b>
+    </div>
+<% }) %>
+</div>
