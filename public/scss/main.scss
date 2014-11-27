@@ -77,6 +77,7 @@ button.google {
         position: relative;
         height: 1100px;
         margin-top: -58%; // show hours from ~7 o'clock not from midnight
+//        background-color: rgba(0, 0, 0, .1);
         .item {
             position: absolute;
             font-size: .6em;
@@ -90,9 +91,17 @@ button.google {
                 z-index: 1;
             }
             &.event {
-                left: 30px;
+                padding-left: 30px;
+                left: 0;
                 right: 0;
-                background-color: rgba(0, 0, 0, .1);
+                color: rgba(0, 0, 0, 0.1);
+                background-color: rgba(0, 0, 0, 0.1);
+//                background: url("img/taken.jpg");
+//                background-color: #fff;
+                z-index: 2;
+                &:hover {
+                    color: #000;
+                }
             }
         }
     }
