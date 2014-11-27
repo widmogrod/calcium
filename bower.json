@@ -21,6 +21,8 @@
     "tests"
   ],
   "dependencies": {
-    "requirejs-plugins": "~1.0.2"
+    "requirejs-plugins": "~1.0.2",
+    "jef": "~1.9.5",
+    "jquery": "~2.1.1"
   }
 }

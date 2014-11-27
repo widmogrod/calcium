@@ -1,26 +1,54 @@
 require.config({
     name: 'main',
     paths: {
-        async: '../vendor/requirejs-plugins/src/async'
+        async: '../vendor/requirejs-plugins/src/async',
+        jquery: '../vendor/jquery/src/jquery',
+        jef: '../vendor/jef/src'
     }
 });
 
-define(['gapi', 'config'], function(gapi, config) {
+define(['calendar', 'jef/stream', 'jef/integration/jquery.streamOn'], function(calendar, Stream) {
     'use strict';
 
-    gapi.client.setApiKey(config.gapi.apiKey);
+    function element(e) {
+        return $(e.target);
+    }
 
-    //gapi.auth.authorize(config, function () {
-    //    console.log('login complete');
-    //    console.log(gapi.auth.getToken());
-    //});
+    function elementToAction($el) {
+        return $el.data('action');
+    }
 
-    gapi.client.request({
-        'path': '/calendar/v3/users/me/calendarList'
-    }).then(function (r) {
-        console.log('r', r);
-    }, function (e) {
-        console.log('e', e);
+    function equal(name) {
+        return function(action) {
+            return action === name
+        }
+    }
+
+    var actionsClicks = $(document).streamOn('click', '[data-action]').map(element).map(elementToAction);
+
+    var actions = new Stream();
+
+    actionsClicks.pipe(actions);
+
+    actions.accept(equal('try-auth')).on('data', function() {
+        calendar.authorize().then(function() {
+            actions.push('authorized');
+        }, function(e) {
+            actions.push('authorized-error');
+        })
     });
+    actions.accept(equal('authorized')).on('data', function() {
+        $('body').removeClass('no-auth');
+    });
+    actions.accept(equal('authorized-error')).on('data', function() {
+        $('body').removeClass('no-auth');
+    });
+    actions.accept(equal('unauthorized')).on('data', function() {
+        $('body').addClass('no-auth');
+    });
+
+    if (calendar.isAuth()) {
+        actions.push('unauthorized');
+    }
 });
 
