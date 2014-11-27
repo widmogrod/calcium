@@ -41,6 +41,11 @@ define([
             return data.action === name
         }
     }
+    function actionAny(actions) {
+        return function (data) {
+            return -1 !== actions.indexOf(data.action);
+        }
+    }
 
     function dispatch(action, params) {
         return merge({
@@ -104,6 +109,9 @@ define([
         }).on('error', function (e) {
             console.log('[e] load-events', e);
         });
+    });
+    actions.accept(actionAny(['authorized', 'unauthorized'])).on('data', function() {
+        $('body').addClass('ready').removeClass('init');
     });
 
     console.log('[-] init try-auth');
