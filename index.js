@@ -17,6 +17,9 @@ app.set('view engine', 'html');
 app.get('/', function (req, res) {
     res.render('index');
 });
+app.get('/root-lotus-777', function (req, res) {
+    res.render('index');
+});
 
 var server = app.listen(3000, function () {
 
