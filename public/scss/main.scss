@@ -79,7 +79,8 @@ button.google {
         margin-top: -58%; // show hours from ~7 o'clock not from midnight
         .item {
             position: absolute;
-            font-size: .5em;
+            font-size: .6em;
+            font-weight: normal;
             &.time {
                 left: 0;
                 right: 0;

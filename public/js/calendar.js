@@ -14,7 +14,10 @@ define([
 
     return {
         authorize: function (immediate) {
-            return gapi.auth.authorize(_.merge(config.gapi, immediate ? {immediate: true} : {}));
+            return gapi.auth.authorize(_.merge(
+                config.gapi,
+                immediate ? {immediate: true} : {}
+            ));
         },
         loadCalendarList: function () {
             return Stream.fromPromise(gapi.client.request({

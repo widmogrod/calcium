@@ -103,6 +103,6 @@ define([
         $('body').addClass('ready').removeClass('init');
     });
 
-    actions.push(dispatch('try-auth', {immediate: false}));
+    actions.push(dispatch('try-auth', {immediate: true}));
 });
 

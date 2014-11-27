@@ -9,11 +9,9 @@
     <div class="item event"
          data-action="show-event"
          data-id="<%= item.id %>"
-         data-fromM="<%= item.duration.fromMidnight %>"
-         data-duration="<%= item.duration.duration %>"
          style="top: <%= item.duration.fromMidnight/1440 * 100 %>%; height: <%= item.duration.duration/1440 * 100 %>%">
         <%= item.name %>
-        <b><%= item.duration.duration %></b>
+        <b><%= item.duration.duration %></b>min
     </div>
 <% }) %>
 </div>
