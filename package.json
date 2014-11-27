@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/widmogrod/calcium/issues"
   },
-  "homepage": "https://github.com/widmogrod/calcium"
+  "homepage": "https://github.com/widmogrod/calcium",
+  "dependencies": {
+    "express": "^4.10.4"
+  }
 }
