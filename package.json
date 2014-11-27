@@ -28,5 +28,5 @@
   "engines": {
     "node": "0.10.x"
   },
-  "postinstall": "bower install"
+  "postinstall": "bower update"
 }
