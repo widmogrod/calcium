@@ -18,7 +18,7 @@ app.use(sassMiddleware({
     dest: __dirname + '/public/css',
     outputStyle: 'compressed',
     prefix: '/css',
-    debug: true
+    debug: process.env.PORT ? false : true
 }));
 app.use(express.static(__dirname + '/public'));
 
