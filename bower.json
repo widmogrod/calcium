@@ -1,0 +1,23 @@
+{
+  "name": "calcium",
+  "version": "1.0.0",
+  "authors": [
+    "widmogrod <widmogrod@gmail.com>"
+  ],
+  "description": "Google Calendar app for fast and easy reservations of Video Conference Rooms. It's focused on showing available slots.",
+  "keywords": [
+    "Google",
+    "Calendar",
+    "node"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/widmogrod/calcium",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
