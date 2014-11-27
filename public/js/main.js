@@ -6,7 +6,6 @@ require.config({
         jquery: '../vendor/jquery/src/jquery',
         moment: '../vendor/moment/moment',
         momentLocale: '../vendor/moment/locale',
-        rxjs: '../vendor/rxjs/dist/rx.all.min',
         jef: '../vendor/jef/src'
     }
 });
