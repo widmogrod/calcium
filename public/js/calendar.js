@@ -1,18 +1,27 @@
-define(['gapi', 'config'], function (gapi, config) {
+define(['gapi', 'config', 'jef/stream', 'jef/functional/map'], function (gapi, config, Stream, map) {
     'use strict';
 
     gapi.client.setApiKey(config.gapi.apiKey);
 
     return {
-        isAuth: function() {
-            return !!gapi.auth.getToken();
-        },
         authorize: function() {
             return gapi.auth.authorize(config.gapi);
         },
-        calendarList: function () {
-            return gapi.client.request({
+        loadCalendarList: function () {
+            return Stream.fromPromise(gapi.client.request({
                 'path': '/calendar/v3/users/me/calendarList'
+            })).map(function(result) {
+                // Better would be flatMap
+                // TODO: In Stream Remove []
+                return [result.result.items];
+            }).map(function(items) {
+                // TODO: In Stream Remove []
+                return [map(items, function(item) {
+                    return {
+                        id: item.id,
+                        name: item.summary
+                    }
+                })];
             });
         }
     }

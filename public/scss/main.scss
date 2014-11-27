@@ -56,6 +56,15 @@ button.google {
     }
 }
 
+.list {
+    .item {
+        font-weight: lighter;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid rgba(0,0,0,.1);
+    }
+}
+
 // State
 .authentication {display: none}
 .no-auth {
