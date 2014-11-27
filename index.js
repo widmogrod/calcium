@@ -13,6 +13,7 @@ app.engine('html', function (filePath, options, callback) {
 });
 app.set('views', './templates'); // specify the views directory
 app.set('view engine', 'html');
+app.set('port', process.env.PORT || 5000);
 
 app.get('/', function (req, res) {
     res.render('index');
@@ -21,7 +22,7 @@ app.get('/root-lotus-777', function (req, res) {
     res.render('index');
 });
 
-var server = app.listen(3000, function () {
+var server = app.listen(app.get('port'), function () {
 
     var host = server.address().address;
     var port = server.address().port;
