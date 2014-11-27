@@ -4,7 +4,8 @@
     "description": "Google Calendar app for fast and easy reservations of Video Conference Rooms. It's focused on showing available slots.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "postinstall": "bower update"
     },
     "repository": {
         "type": "git",
@@ -27,8 +28,5 @@
     },
     "engines": {
         "node": "0.10.x"
-    },
-    "scripts": {
-        "postinstall": "bower update"
     }
 }
