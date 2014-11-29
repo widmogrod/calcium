@@ -47,7 +47,7 @@ define([
     }
 
     function dispatch(action, params) {
-        return _.merge({
+        return merge({
             action: action
         }, params || {})
     }
@@ -62,6 +62,7 @@ define([
         calendar.authorize(params.immediate).then(function (v) {
             actions.push(dispatch('authorized'));
         }, function (e) {
+            console.log('[x] error of authorization:', e);
             actions.push(dispatch('authorized-error'));
         })
     });

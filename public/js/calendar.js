@@ -14,10 +14,11 @@ define([
 
     return {
         authorize: function (immediate) {
-            return gapi.auth.authorize(_.merge(
+            var o = merge(
                 config.gapi,
                 immediate ? {immediate: true} : {}
-            ));
+            );
+            return gapi.auth.authorize(o);
         },
         loadCalendarList: function () {
             return Stream.fromPromise(gapi.client.request({
