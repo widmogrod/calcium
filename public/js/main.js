@@ -79,24 +79,24 @@ define([
     });
     // Calendars
     actions.accept(actionIs('load-calendars')).on('data', function () {
-        calendar.loadCalendarList().on('data', function (items) {
+        calendar.loadCalendarList().on(function (items) {
             $('#js-calendars-list').html(
                 calendarsListView({
                     items: items
                 })
             );
-        }).on('error', function (e) {
+        }, function (e) {
             console.log('[e] load-calendars', e);
-        });
+        }).log('loadCalendarList');
     });
     actions.accept(actionIs('toggle-calendar')).on('data', function (params) {
-        calendar.loadEventsList(params.id, new Date()).on('data', function (items) {
+        calendar.loadEventsList(params.id, new Date()).on(function (items) {
             $('#js-events-list').html(
                 eventsListView({
                     items: items
                 })
             );
-        }).on('error', function (e) {
+        }, function (e) {
             console.log('[e] load-events', e);
         });
     });

@@ -1,4 +1,7 @@
 $left-distance: 10px;
+$link-background-color-hover: #ccf4e5;
+$event-background-color: rgba(204, 244, 229, 0.64);
+$event-background-color-hover: rgba(89, 229, 172, 0.71);
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -69,7 +72,7 @@ button.google {
             border-bottom: 1px solid rgba(0, 0, 0, .1);
             cursor: pointer;
             &:hover {
-                background-color: #ccf4e5;
+                background-color: $link-background-color-hover;
             }
         }
     }
@@ -92,14 +95,16 @@ button.google {
             }
             &.event {
                 padding-left: 30px;
-                left: 0;
-                right: 0;
+                left: 45px;
+                right: 20px;
                 color: rgba(0, 0, 0, 0.1);
-                background-color: rgba(0, 0, 0, 0.1);
+                background-color: $event-background-color;
+                box-shadow: 0px 2px 1px rgba(38, 136, 98, 0.56);
 //                background: url("img/taken.jpg");
 //                background-color: #fff;
                 z-index: 2;
                 &:hover {
+                    background-color: $event-background-color-hover;
                     color: #000;
                 }
             }
