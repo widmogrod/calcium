@@ -43,7 +43,9 @@ define([
                 path: '/calendar/v3/calendars/' + calendarId + '/events',
                 params: {
                     timeMax: range.end,
-                    timeMin: range.start
+                    timeMin: range.start,
+                    orderBy: 'startTime',
+                    singleEvents: true
                 }
             })).map(function (value) {
                 return Stream.fromArray(value.result.items);
@@ -52,25 +54,28 @@ define([
                 && item.visibility !== 'private'
             }).map(function (item) {
                 return {
-                    id: item.id,
-                    name: item.summary,
-                    start: item.start.dateTime,
-                    end: item.end.dateTime,
-                    recurrence: !!item.recurrence,
-                    // OLD
-                    range: {
-                        start: item.start.dateTime,
-                        end: item.end.dateTime
-                    },
+                    //id: item.id,
+                    //name: item.summary,
+                    //start: item.start.dateTime,
+                    //startN: moment(item.start.dateTime).format('YYYY-MM-DD HH:mm:ss'),
+                    //end: item.end.dateTime,
+                    //recurrence: !!item.recurrence,
+                    //// OLD
+                    //range: {
+                    //    start: item.start.dateTime,
+                    //    end: item.end.dateTime
+                    //},
                     duration: {
                         fromMidnight: dateMinutesFromMidnight(item.start.dateTime),
                         duration: dateDurationInMinutes(item.start.dateTime, item.end.dateTime)
-                    },
-                    howManyAtendees: item.attendees ? item.attendees.length : 0
+                    }
+                    //,
+                    //howManyAtendees: item.attendees ? item.attendees.length : 0
                 }
             }).reduce(function (item, base) {
                 return base.push(item), base
             }, []).map(function (data) {
+
                 var gruped = reduce(data, function (value, base) {
                     if (!(value.duration.fromMidnight in base)) {
                         base[value.duration.fromMidnight] = value;
@@ -106,7 +111,7 @@ define([
                 var diff = reduce(reduced2.result, function (value, base) {
                     if (base.prev) {
                         base.result.push({
-                            duration: value.duration.fromMidnight - base.prev.duration.fromMidnight,
+                            duration: value.duration.fromMidnight - summ(base.prev),
                             fromMidnight: base.prev.duration.fromMidnight
                         });
                         base.prev = value;
