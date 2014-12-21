@@ -1,0 +1,8 @@
+<div class="list calendar-time">
+    <% for(var i = 0; i < 24; i++) {%>
+    <div class="item time"
+         style="top: <%= i/24 * 100 %>%; height: <%= 1/24 * 100 %>%">
+        <%= i %>
+    </div>
+    <% } %>
+</div>

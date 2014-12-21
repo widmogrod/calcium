@@ -18,15 +18,17 @@ define([
     'jef/functional/merge',
     'text!template/calendars-list.html',
     'text!template/events-list.html',
+    'text!template/events-time.html',
     'jef/integration/jquery.streamOn'
 ], function (moment, momentLocale, calendar, Stream,
-             merge, calendarsListTemplate, eventsListTemplate) {
+             merge, calendarsListTemplate, eventsListTemplate, eventsTimeTemplate){
     'use strict';
 
     moment.locale('en-gb');
 
     var calendarsListView = _.template(calendarsListTemplate);
     var eventsListView = _.template(eventsListTemplate);
+    var eventsTimeView = _.template(eventsTimeTemplate);
 
     function element(e) {
         return $(e.target);
@@ -54,10 +56,7 @@ define([
     }
 
     var $doc = $(document);
-
-    var actions = new Stream.Push(function() {
-
-    });
+    var actions = new Stream.Push();
     var actionsClicks = Stream.fromEmitter($doc, '[data-action]', 'click').map(element).map(elementToData);
 
     actions.consume(actionsClicks);
@@ -91,16 +90,19 @@ define([
                     items: items
                 })
             );
-        }).log('loadCalendarList');
+        });
     });
     actions.filter(actionIs('toggle-calendar')).on(function (params) {
-        calendar.loadEventsList(params.id, new Date()).on(function (items) {
-            $('#js-events-list').html(
+        var $result = $('#js-events-list');
+        $result.html(eventsTimeView());
+
+        calendar.loadEventsList(params.id, new Date()).on(function(items) {
+            $result.append(
                 eventsListView({
                     items: items
                 })
             );
-        }).log('loadEventsList');
+        });
     });
     actions.filter(actionAny(['authorized', 'unauthorized'])).on(function() {
         $('body').addClass('ready').removeClass('init');
