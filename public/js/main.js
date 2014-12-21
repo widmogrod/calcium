@@ -14,12 +14,13 @@ define([
     'moment',
     'momentLocale/en-gb',
     'calendar',
-    'jef/stream',
+    'jef/stream2',
     'jef/functional/merge',
     'text!template/calendars-list.html',
     'text!template/events-list.html',
     'jef/integration/jquery.streamOn'
-], function (moment, momentLocale, calendar, Stream, merge, calendarsListTemplate, eventsListTemplate) {
+], function (moment, momentLocale, calendar, Stream,
+             merge, calendarsListTemplate, eventsListTemplate) {
     'use strict';
 
     moment.locale('en-gb');
@@ -52,55 +53,56 @@ define([
         }, params || {})
     }
 
-    var actions = new Stream();
-    var actionsClicks = $(document).streamOn('click', '[data-action]').map(element).map(elementToData);
+    var $doc = $(document);
 
-    actionsClicks.pipe(actions);
+    var actions = new Stream.Push(function() {
+
+    });
+    var actionsClicks = Stream.fromEmitter($doc, '[data-action]', 'click').map(element).map(elementToData);
+
+    actions.consume(actionsClicks);
+    actions.log('actions');
 
     // Auth
-    actions.accept(actionIs('try-auth')).on('data', function (params) {
-        calendar.authorize(params.immediate).then(function (v) {
+    actions.filter(actionIs('try-auth')).on(function (params) {
+        calendar.authorize(params.immediate).then(function () {
             actions.push(dispatch('authorized'));
         }, function (e) {
             console.log('[x] error of authorization:', e);
             actions.push(dispatch('authorized-error'));
         })
     });
-    actions.accept(actionIs('authorized')).on('data', function () {
+    actions.filter(actionIs('authorized')).on(function () {
         $('body').removeClass('no-auth');
         actions.push(dispatch('load-calendars'));
     });
-    actions.accept(actionIs('authorized-error')).on('data', function () {
+    actions.filter(actionIs('authorized-error')).on(function () {
         // Display some kind of info
         actions.push(dispatch('unauthorized'));
     });
-    actions.accept(actionIs('unauthorized')).on('data', function () {
+    actions.filter(actionIs('unauthorized')).on(function () {
         $('body').addClass('no-auth');
     });
     // Calendars
-    actions.accept(actionIs('load-calendars')).on('data', function () {
+    actions.filter(actionIs('load-calendars')).on(function () {
         calendar.loadCalendarList().on(function (items) {
             $('#js-calendars-list').html(
                 calendarsListView({
                     items: items
                 })
             );
-        }, function (e) {
-            console.log('[e] load-calendars', e);
         }).log('loadCalendarList');
     });
-    actions.accept(actionIs('toggle-calendar')).on('data', function (params) {
+    actions.filter(actionIs('toggle-calendar')).on(function (params) {
         calendar.loadEventsList(params.id, new Date()).on(function (items) {
             $('#js-events-list').html(
                 eventsListView({
                     items: items
                 })
             );
-        }, function (e) {
-            console.log('[e] load-events', e);
-        });
+        }).log('loadEventsList');
     });
-    actions.accept(actionAny(['authorized', 'unauthorized'])).on('data', function() {
+    actions.filter(actionAny(['authorized', 'unauthorized'])).on(function() {
         $('body').addClass('ready').removeClass('init');
     });
 

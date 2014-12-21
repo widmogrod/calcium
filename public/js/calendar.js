@@ -25,7 +25,7 @@ define([
         loadCalendarList: function () {
             console.log('loadCalendarList');
             return Stream.fromPromise(gapi.client.request({
-                path: '/calendar/v3/users/me/calendarList'
+                path: '/calendar/v3/users/me/calendarList',
             })).map(function (value) {
                 return Stream.fromArray(value.result.items);
             }).concat().map(function (item) {
@@ -33,9 +33,9 @@ define([
                     id: item.id,
                     name: item.summary
                 }
-            }).reduce(function (item, base) {
-                return base.push(item), base
-            }, []);
+            }).filter(function(item) {
+                return /Room$/.test(item.name);
+            }).toArray();
         },
         loadEventsList: function (calendarId, date) {
             var range = dateToRange(date);
@@ -72,9 +72,7 @@ define([
                     //,
                     //howManyAtendees: item.attendees ? item.attendees.length : 0
                 }
-            }).reduce(function (item, base) {
-                return base.push(item), base
-            }, []).map(function (data) {
+            }).toArray().map(function (data) {
 
                 var gruped = reduce(data, function (value, base) {
                     if (!(value.duration.fromMidnight in base)) {
