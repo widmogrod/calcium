@@ -19,22 +19,34 @@ define([
     'text!template/calendars-list.html',
     'text!template/events-list.html',
     'text!template/events-time.html',
+    'utils/offsetFromMidnight',
+    'utils/offsetDuration',
+    'utils/offsetHour',
     'jef/integration/jquery.streamOn'
 ], function (moment, momentLocale, calendar, Stream,
-             merge, calendarsListTemplate, eventsListTemplate, eventsTimeTemplate){
+             merge, calendarsListTemplate, eventsListTemplate, eventsTimeTemplate,
+             offsetFromMidnight, offsetDuration, offsetHour){
     'use strict';
 
     moment.locale('en-gb');
 
-    var calendarsListView = _.template(calendarsListTemplate);
-    var eventsListView = _.template(eventsListTemplate);
-    var eventsTimeView = _.template(eventsTimeTemplate);
+    var helpers = {
+        imports: {
+            offsetFromMidnight: offsetFromMidnight,
+            offsetDuration: offsetDuration,
+            offsetHour: offsetHour
+        }
+    };
 
-    function element(e) {
+    var calendarsListView = _.template(calendarsListTemplate, null, helpers);
+    var eventsListView = _.template(eventsListTemplate, null, helpers);
+    var eventsTimeView = _.template(eventsTimeTemplate, null, helpers);
+
+    function to$Element(e) {
         return $(e.target);
     }
 
-    function elementToData($el) {
+    function to$Data($el) {
         return $el.data();
     }
 
@@ -56,23 +68,22 @@ define([
     }
 
     var $doc = $(document);
+    var $body = $('body');
     var actions = new Stream.Push();
-    var actionsClicks = Stream.fromEmitter($doc, '[data-action]', 'click').map(element).map(elementToData);
+    var actionsClicks = Stream.fromEmitter($doc, '[data-action]', 'click').map(to$Element).map(to$Data);
 
     actions.consume(actionsClicks);
-    actions.log('actions');
 
     // Auth
     actions.filter(actionIs('try-auth')).on(function (params) {
         calendar.authorize(params.immediate).then(function () {
             actions.push(dispatch('authorized'));
-        }, function (e) {
-            console.log('[x] error of authorization:', e);
+        }, function () {
             actions.push(dispatch('authorized-error'));
         })
     });
     actions.filter(actionIs('authorized')).on(function () {
-        $('body').removeClass('no-auth');
+        $body.removeClass('no-auth');
         actions.push(dispatch('load-calendars'));
     });
     actions.filter(actionIs('authorized-error')).on(function () {
@@ -80,7 +91,7 @@ define([
         actions.push(dispatch('unauthorized'));
     });
     actions.filter(actionIs('unauthorized')).on(function () {
-        $('body').addClass('no-auth');
+        $body.addClass('no-auth');
     });
     // Calendars
     actions.filter(actionIs('load-calendars')).on(function () {
@@ -105,7 +116,7 @@ define([
         });
     });
     actions.filter(actionAny(['authorized', 'unauthorized'])).on(function() {
-        $('body').addClass('ready').removeClass('init');
+        $body.addClass('ready').removeClass('init');
     });
 
     actions.push(dispatch('try-auth', {immediate: true}));

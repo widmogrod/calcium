@@ -3,7 +3,7 @@
     <div class="item event"
          data-action="show-event"
          data-id="<%= item.id %>"
-         style="top: <%= item.duration.fromMidnight/1440 * 100 %>%; height: <%= item.duration.duration/1440 * 100 %>%">
+         style="top: <%= offsetFromMidnight(item.duration) %>%; height: <%= offsetDuration(item.duration) %>%">
         <%= item.name %>
         <b><%= item.duration.duration %></b>min
     </div>
