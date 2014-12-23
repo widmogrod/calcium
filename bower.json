@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "requirejs-plugins": "~1.0.2",
-    "jef": "#master",
+    "jef": " 2.0.0-alpha1",
     "jquery": "~2.1.1",
     "requirejs-text": "~2.0.12",
     "moment": "~2.8.4"
