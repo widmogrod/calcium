@@ -74,7 +74,7 @@ define([
 
     var actions = new Stream.Push();
     var dateStream = new Stream.Push();
-    var dateStreamLast = dateStream.last();
+    var dateStreamLast = dateStream.last().take(1);
     var actionsClicks = Stream.fromEmitter($doc, '[data-action]', 'click').map(to$Element).map(to$Data);
 
     actions.consume(actionsClicks);
@@ -139,13 +139,11 @@ define([
     actions.filter(actionIs('date-prev')).on(function () {
         dateStreamLast.on(function (value) {
             dateStream.push(value.subtract(1, 'week'));
-            return Stream.stop;
         });
     });
     actions.filter(actionIs('date-next')).on(function () {
         dateStreamLast.on(function (value) {
             dateStream.push(value.add(1, 'week'));
-            return Stream.stop;
         });
     });
 
