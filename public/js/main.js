@@ -25,7 +25,7 @@ define([
     'jef/integration/jquery.streamOn'
 ], function (moment, momentLocale, calendar, Stream,
              merge, calendarsListTemplate, eventsListTemplate, eventsTimeTemplate,
-             offsetFromMidnight, offsetDuration, offsetHour){
+             offsetFromMidnight, offsetDuration, offsetHour) {
     'use strict';
 
     moment.locale('en-gb');
@@ -55,6 +55,7 @@ define([
             return data.action === name
         }
     }
+
     function actionAny(actions) {
         return function (data) {
             return -1 !== actions.indexOf(data.action);
@@ -69,7 +70,11 @@ define([
 
     var $doc = $(document);
     var $body = $('body');
+    var $eventListResult = $('#js-events-list');
+
     var actions = new Stream.Push();
+    var dateStream = new Stream.Push();
+    var dateStreamLast = dateStream.last();
     var actionsClicks = Stream.fromEmitter($doc, '[data-action]', 'click').map(to$Element).map(to$Data);
 
     actions.consume(actionsClicks);
@@ -103,22 +108,48 @@ define([
             );
         });
     });
-    actions.filter(actionIs('toggle-calendar')).on(function (params) {
-        var $result = $('#js-events-list');
-        $result.html(eventsTimeView());
+    Stream.when([
+        actions.filter(actionIs('toggle-calendar')),
+        dateStream
+    ]).on(function (data) {
+        var params = data[0];
+        var date = data[1];
 
-        calendar.loadEventsList(params.id, new Date()).on(function(items) {
-            $result.append(
+        $eventListResult.html(eventsTimeView());
+        calendar.loadEventsList(params.id, date).on(function (items) {
+            $eventListResult.append(
                 eventsListView({
                     items: items
                 })
             );
         });
     });
-    actions.filter(actionAny(['authorized', 'unauthorized'])).on(function() {
+    actions.filter(actionAny(['authorized', 'unauthorized'])).on(function () {
         $body.addClass('ready').removeClass('init');
     });
 
+    actions.filter(actionIs('date-today')).on(function () {
+        dateStream.push(moment(new Date()));
+    });
+
+    dateStream.on(function (value) {
+        $('#js-selected-date').text(value.format('YYYY-MM-DD'));
+    });
+
+    actions.filter(actionIs('date-prev')).on(function () {
+        dateStreamLast.on(function (value) {
+            dateStream.push(value.subtract(1, 'week'));
+            return Stream.stop;
+        });
+    });
+    actions.filter(actionIs('date-next')).on(function () {
+        dateStreamLast.on(function (value) {
+            dateStream.push(value.add(1, 'week'));
+            return Stream.stop;
+        });
+    });
+
+    actions.push(dispatch('date-today'));
     actions.push(dispatch('try-auth', {immediate: true}));
 });
 

@@ -159,7 +159,7 @@ define([
                 .map(function (item) {
                     return {
                         id: null,
-                        name: 'Free',
+                        name: item.data.start.format('dddd'),
                         duration: item
                     }
                 })

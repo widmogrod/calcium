@@ -16,13 +16,17 @@ h1, h2, p {
     margin: 0 0 10px 0;
 }
 
-button.google {
-    background-color: rgb(211, 72, 54);
+button {
     color: #fff;
     border: 0;
-    padding: 10px;
+    padding: 5px 20px;
     font-size: inherit;
     cursor: pointer;
+    background-color: rgb(98, 211, 154);
+
+    &.google {
+        background-color: rgb(211, 72, 54);
+    }
 }
 
 .header-sub {
@@ -30,10 +34,15 @@ button.google {
     font-family: "HelveticaNeue-UltraLight", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+.selected-date {
+    float: right;
+    font-family: "HelveticaNeue-UltraLight", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
 .component {
-    padding: $left-distance;
+    padding: 0 $left-distance $left-distance;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, .2);
-    margin-bottom: 10px;
+    margin-bottom: $left-distance;
 }
 
 .header {
@@ -120,16 +129,11 @@ button.google {
 }
 
 // State
-.authentication {
-    display: none
-}
-
-.preparing {
+.authentication,
+.preparing,
+.panels,
+.navigation {
     display: none;
-}
-
-.panels {
-    display: none
 }
 
 .init {
@@ -139,6 +143,7 @@ button.google {
 }
 
 .ready {
+    .navigation,
     .panels {
         display: block;
     }
