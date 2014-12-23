@@ -7,7 +7,7 @@ $event-background-color-hover: rgba(89, 229, 172, 0.71);
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-size: 1em;
+    font-size: 2em;
     margin: 0;
     padding: 0;
 }
@@ -15,12 +15,20 @@ body {
 h1, h2, p {
     margin: 0 0 10px 0;
 }
+h1 {
+    font-size: 2em;
+}
+h2 {
+    font-size: 2em;
+}
+p, button {
+    font-size: 2em;
+}
 
 button {
     color: #fff;
     border: 0;
     padding: 5px 20px;
-    font-size: inherit;
     cursor: pointer;
     background-color: rgb(98, 211, 154);
 
@@ -32,11 +40,17 @@ button {
 .header-sub {
     font-weight: lighter;
     font-family: "HelveticaNeue-UltraLight", Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: .5em;
 }
 
 .selected-date {
     float: right;
     font-family: "HelveticaNeue-UltraLight", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+.scrollable {
+    overflow-y: auto;
+    position: relative;
 }
 
 .component {
@@ -63,19 +77,9 @@ button {
 }
 
 .panel {
+    position: relative;
     padding-right: 10px;
     padding-left: $left-distance;
-    float: left;
-    &.left {
-        width: 20%
-    }
-    &.main {
-        width: 75%
-    }
-    &.side {
-        width: 20%;
-        display: none;
-    }
 }
 
 .list {
@@ -94,10 +98,8 @@ button {
     &.calendar-events,
     &.calendar-time {
         float: left;
-        position: relative;
         height: 1100px;
         width: 12.5%;
-        margin-top: -58%; // show hours from ~7 o'clock not from midnight
         .item {
             position: absolute;
             font-size: .6em;
@@ -124,6 +126,7 @@ button {
     }
     &.calendar-events {
         &.range-week {
+            position: relative;
         }
     }
 }
@@ -230,12 +233,22 @@ button {
 
 /* Larger than tablet */
 @media (min-width: 750px) {
-
 }
 
 /* Larger than desktop */
 @media (min-width: 1000px) {
-
+    body {
+        font-size: 1em;
+    }
+    .panel {
+        float: left;
+        &.left {
+            width: 20%
+        }
+        &.main {
+            width: 75%
+        }
+    }
 }
 
 /* Larger than Desktop HD */
