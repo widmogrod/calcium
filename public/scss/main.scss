@@ -71,14 +71,6 @@ button {
     box-shadow: none;
 }
 
-.authentication {
-    width: 450px;
-    margin: 100px auto;
-}
-
-.panels {
-}
-
 .panel {
     position: relative;
     padding-right: 10px;
@@ -241,6 +233,11 @@ button {
 
 /* Larger than desktop */
 @media (min-width: 1000px) {
+    .authentication {
+        width: 450px;
+        margin: 100px auto;
+    }
+
     .panel {
         float: left;
         &.left {
