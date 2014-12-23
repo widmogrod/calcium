@@ -2,12 +2,16 @@ $left-distance: 10px;
 $link-background-color-hover: #ccf4e5;
 $event-background-color: rgba(204, 244, 229, 0.64);
 $event-background-color-hover: rgba(89, 229, 172, 0.71);
+$font-size-default: 16px;
+$font-size-h1: 20px;
+$font-size-sub: 14px;
+$font-size-h2: 18px;
 
 /* Mobile first queries */
 
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-size: 2em;
+    font-size: $font-size-default;
     margin: 0;
     padding: 0;
 }
@@ -16,19 +20,17 @@ h1, h2, p {
     margin: 0 0 10px 0;
 }
 h1 {
-    font-size: 2em;
+    font-size: $font-size-h1;
 }
 h2 {
-    font-size: 2em;
-}
-p, button {
-    font-size: 2em;
+    font-size: $font-size-h2;
 }
 
 button {
     color: #fff;
     border: 0;
     padding: 5px 20px;
+    font-size: $font-size-default;
     cursor: pointer;
     background-color: rgb(98, 211, 154);
 
@@ -40,12 +42,12 @@ button {
 .header-sub {
     font-weight: lighter;
     font-family: "HelveticaNeue-UltraLight", Helvetica, Arial, "Lucida Grande", sans-serif;
-    font-size: .5em;
+    font-size: $font-size-sub;
 }
 
 .selected-date {
     float: right;
-    font-size: 2em;
+    font-size: $font-size-default;
     font-family: "HelveticaNeue-UltraLight", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
@@ -58,6 +60,7 @@ button {
     padding: 0 $left-distance $left-distance;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, .2);
     margin-bottom: $left-distance;
+    overflow: hidden;
 }
 
 .header {
@@ -74,7 +77,6 @@ button {
 }
 
 .panels {
-    overflow: hidden;
 }
 
 .panel {
@@ -238,9 +240,6 @@ button {
 
 /* Larger than desktop */
 @media (min-width: 1000px) {
-    body {
-        font-size: 1em;
-    }
     .panel {
         float: left;
         &.left {
@@ -250,10 +249,5 @@ button {
             width: 75%
         }
     }
-}
-
-/* Larger than Desktop HD */
-@media (min-width: 1200px) {
-
 }
 
